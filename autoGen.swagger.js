@@ -9,6 +9,7 @@ const doc = {
     version: '1.0.0'
   },
   host: `/${process.env.LOCAL_HOST}:${process.env.PORT_API}`,
+  schemes: ["http", "https"],
   security: [{ "apiKeyAuth": [] }],
   securityDefinitions: {
     apiKeyAuth: {
