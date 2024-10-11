@@ -216,8 +216,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": "No Content"
           },
           "400": {
             "description": "Bad Request"
@@ -253,7 +253,7 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Edita um usuário existente! Não pode editar o CPF.",
+            "description": "Edita um usuário existente!",
             "schema": {
               "type": "object",
               "properties": {
@@ -268,6 +268,10 @@
                 "sexo": {
                   "type": "string",
                   "example": "Masculino"
+                },
+                "senha": {
+                  "type": "string",
+                  "example": "funcionando"
                 },
                 "data_nascimento": {
                   "type": "string",
@@ -306,6 +310,7 @@
                 "nome",
                 "email",
                 "sexo",
+                "senha",
                 "data_nascimento",
                 "cep",
                 "rua",
@@ -383,6 +388,29 @@
         }
       }
     },
+    "/login/logout": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/local/": {
       "post": {
         "tags": [
@@ -408,7 +436,7 @@
                 },
                 "descricao": {
                   "type": "string",
-                  "example": "Trilha de aproximadamente 45 min de subida, com uma vista para as praias do Santinho, Moçambique e Ingleses"
+                  "example": "Trilha com vista para as praias do Santinho, Moçambique e Ingleses"
                 },
                 "cep": {
                   "type": "string",
@@ -442,26 +470,10 @@
         "tags": [
           "Local"
         ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "Locais",
-            "in": "query",
-            "description": "Buscar todos os locais",
-            "type": "string"
-          }
-        ],
+        "description": "Buscar todos os locais cadastrados",
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
           },
           "404": {
             "description": "Not Found"
@@ -472,37 +484,12 @@
         }
       }
     },
-    "/local/{localId}/maps": {
+    "/local/local": {
       "get": {
-        "tags": [
-          "Local"
-        ],
         "description": "",
-        "parameters": [
-          {
-            "name": "localId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "Local_id",
-            "in": "query",
-            "description": "Filtrar local pelo ID",
-            "type": "string"
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
           },
           "404": {
             "description": "Not Found"
@@ -514,6 +501,40 @@
       }
     },
     "/local/{localId}": {
+      "get": {
+        "tags": [
+          "Local"
+        ],
+        "description": "Exibir local específico do usuário",
+        "parameters": [
+          {
+            "name": "localId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do local"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
       "delete": {
         "tags": [
           "Local"
@@ -581,9 +602,9 @@
                   "type": "string",
                   "example": "Morro das Aranhas"
                 },
-                "descrição": {
+                "descricao": {
                   "type": "string",
-                  "example": "Trilha facil"
+                  "example": "Trilha fácil"
                 },
                 "cep": {
                   "type": "string",
@@ -592,7 +613,7 @@
               },
               "required": [
                 "nome",
-                "descrição",
+                "descricao",
                 "cep"
               ]
             }
@@ -610,6 +631,72 @@
           },
           "404": {
             "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/local/{localId}/maps": {
+      "get": {
+        "tags": [
+          "Local"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "localId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "Local_id",
+            "in": "query",
+            "description": "Filtrar local pelo ID",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/dashboard/": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "500": {
             "description": "Internal Server Error"
