@@ -10,7 +10,7 @@ module.exports = {
   port: process.env.DB_PORT, //Qual porta do seu postgres (Normalmente é a 5432);
   dialectOptions: {
     ssl: {
-      rejectUnauthorized: true,
+      rejectUnauthorized: false,
       require: true
     }
   },
