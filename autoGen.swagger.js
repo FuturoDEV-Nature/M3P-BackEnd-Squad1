@@ -8,7 +8,8 @@ const doc = {
     description: 'API para cadastro de novos usuários/locais',
     version: '1.0.0'
   },
-  host: `/localhost:${process.env.PORT_API}`,
+  host: `/${process.env.LOCAL_HOST}:${process.env.PORT_API}`,
+  schemes: ["http", "https"],
   security: [{ "apiKeyAuth": [] }],
   securityDefinitions: {
     apiKeyAuth: {
